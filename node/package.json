@@ -1,0 +1,11 @@
+{
+  "name": "random-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "hello_node": "hello.js"
+  },
+  "dependencies": {
+    "ascii-art": "^2.8.5"
+  }
+}
