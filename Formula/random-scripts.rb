@@ -22,5 +22,6 @@ class RandomScripts < Formula
     end
     bin.install_symlink Dir["#{libexec}/bin/hello_node"]
     bin.install_symlink Dir["#{libexec}/bin/hello_python"]
+    bin.install_symlink Dir["#{libexec}/bin/rename_with_dir"]
   end
 end
