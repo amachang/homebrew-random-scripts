@@ -1,6 +1,5 @@
-class RandomScriptsFormula < Formula
+class RandomScripts < Formula
   include Language::Python::Virtualenv
-  include Language::Node
 
   head "https://github.com/amachang/homebrew-random-scripts.git"
   depends_on "python@3.8"
@@ -10,7 +9,7 @@ class RandomScriptsFormula < Formula
     venv = virtualenv_create(libexec, "python@3.8")
     venv.pip_insatll_and_link buildpath/"python"
 
-    system "npm", "install", buildpath/"node", *std_npm_install_args(libexec)
+    system "npm", "install", buildpath/"node", *Language::Node.std_npm_install_args(libexec)
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 end
