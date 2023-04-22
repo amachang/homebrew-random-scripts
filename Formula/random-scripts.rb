@@ -1,8 +1,10 @@
+require "language/node"
+
 class RandomScripts < Formula
   include Language::Python::Virtualenv
 
   head "https://github.com/amachang/homebrew-random-scripts.git", :branch => "main"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "node@18"
 
   def install
