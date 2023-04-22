@@ -11,8 +11,11 @@ class RandomScripts < Formula
   depends_on "pango"
 
   def install
-    venv = virtualenv_create(libexec)
-    venv.pip_install buildpath/"python"
+    venv_root = virtualenv_create(libexec).instance_variable_get("@venv_root")
+
+    chdir "python" do
+      system venv_root/"bin/pip", "install", ".", "-v", "--no-binary", ":all:", "--use-feature=no-binary-enable-wheel-cache", "--ignore-installed"
+    end
 
     chdir "node" do
       system "npm", "install", *Language::Node.std_npm_install_args(libexec)
