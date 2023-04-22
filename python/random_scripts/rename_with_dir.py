@@ -9,13 +9,14 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-arg_parser = ArgumentParser()
-arg_parser.add_argument("--run", action="store_true")
-arg_parser.add_argument("regex", type=re.compile)
-arg_parser.add_argument("replacement", type=str)
-args = arg_parser.parse_args()
 
-def main(args: Any) -> None:
+def main() -> None:
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument("--run", action="store_true")
+    arg_parser.add_argument("regex", type=re.compile)
+    arg_parser.add_argument("replacement", type=str)
+    args = arg_parser.parse_args()
+
     dry_run: bool = not args.run
     regex: re.Pattern = args.regex
     replacement: str = args.replacement
@@ -91,6 +92,5 @@ def move_file(file_path: str, new_file_path: str, dry_run: bool) -> None:
     if not dry_run:
         shutil.move(file_path, new_file_path)
 
-
-main(args)
+main()
 
