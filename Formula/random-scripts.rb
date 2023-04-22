@@ -7,7 +7,7 @@ class RandomScripts < Formula
 
   def install
     venv = virtualenv_create(libexec)
-    venv.pip_insatll_and_link buildpath/"python"
+    venv.pip_install_and_link buildpath/"python"
 
     system "npm", "install", buildpath/"node", *Language::Node.std_npm_install_args(libexec)
     bin.install_symlink Dir["#{libexec}/bin/*"]
