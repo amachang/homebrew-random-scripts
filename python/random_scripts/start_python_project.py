@@ -9,6 +9,8 @@ from github import Github
 from github.Repository import Repository
 from appdirs import user_config_dir
 import jinja2
+import virtualenv
+import subprocess
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -69,6 +71,7 @@ def main() -> None:
         rendered_text = template.render({"project_name": project_name})
         rendered_file_path = project_dir.joinpath(rendered_filename)
         rendered_file_path.write_text(rendered_text)
+        logging.debug(f"Creted file: {rendered_file_path}")
 
     if args.make_github_repo:
         github = prepare_github_api()
@@ -77,6 +80,12 @@ def main() -> None:
         logging.debug(f"Creted the repo: {repo}")
         commit_and_push_project_files(project_dir, repo)
         logging.debug(f"Pushed the project dir")
+
+    venv_dir = project_dir.joinpath("venv")
+    virtualenv.cli_run([str(venv_dir)])
+    subprocess.run(
+        [str(venv_dir.joinpath("bin", "pip")), "install", "-e", str(project_dir)]
+    )
 
 
 def check_project_name(project_name: str) -> None:
@@ -119,6 +128,7 @@ def commit_and_push_project_files(project_dir: Path, repo: Repository) -> None:
 
 def check_github_username(username: str) -> None:
     raise NotImplementedError()
+
 
 if __name__ == "__main__":
     main()

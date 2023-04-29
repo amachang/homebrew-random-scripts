@@ -17,5 +17,6 @@ setup(
         "appdirs~=1.4.4",
         "click~=8.1.3",
         "PyGithub~=1.58.1",
+        "virtualenv~=20.23.0",
     ],
 )
