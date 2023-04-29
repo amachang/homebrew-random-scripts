@@ -12,5 +12,10 @@ setup(
     },
     install_requires=[
         "art~=5.9",
+        "jinja2~=3.1.2",
+        "keyring~=23.13.1",
+        "appdirs~=1.4.4",
+        "click~=8.1.3",
+        "PyGithub~=1.58.1",
     ],
 )
