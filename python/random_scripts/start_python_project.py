@@ -37,11 +37,13 @@ def main() -> None:
 
     project_src_dir = project_dir.joinpath(underscore_project_name(project_name))
     project_src_dir.mkdir(parents=True, exist_ok=False)
+    project_src_dir.joinpath("__init__.py").touch()
     logging.debug(f"Creted the project source directory: {project_src_dir}")
 
-    init_file_path = project_src_dir.joinpath("__init__.py")
-    init_file_path.touch()
-    logging.debug(f"Creted the empty __init__.py: {init_file_path}")
+    project_test_dir = project_dir.joinpath("tests")
+    project_test_dir.mkdir(parents=True, exist_ok=False)
+    project_test_dir.joinpath("__init__.py").touch()
+    logging.debug(f"Creted the project test directory: {project_test_dir}")
 
     template_dir = Path(
         path.join(
