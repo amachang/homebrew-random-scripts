@@ -87,7 +87,9 @@ def make_dir(d: Path, dry_run: bool) -> None:
 
 def move_file(file_path: str, new_file_path: str, dry_run: bool) -> None:
     assert path.exists(file_path)
-    assert not path.exists(new_file_path)
+    if path.exists(new_file_path):
+        raise FileExistsError(f'Error during rename {file_path}: {new_file_path} already exists, operation aborted')
+
     logging.info(f'Move from {file_path} to {new_file_path}')
     if not dry_run:
         shutil.move(file_path, new_file_path)
