@@ -8,6 +8,7 @@ setup(
         "console_scripts": [
             "hello_python=random_scripts.hello:main",
             "rename_with_dir=random_scripts.rename_with_dir:main",
+            "major_image_res=random_scripts.major_image_res:main",
         ],
     },
     install_requires=[
@@ -18,5 +19,8 @@ setup(
         "click~=8.1.3",
         "PyGithub~=1.58.1",
         "virtualenv~=20.23.0",
+        "imagesize~=1.4.1",
+        "tqdm~=4.65.0",
+        "types-tqdm~=4.65.0.1",
     ],
 )
