@@ -25,12 +25,19 @@ class RandomScripts < Formula
       Dir.glob("*.d").each do |filename|
         exec_filename = File.basename(filename, ".d")
         (libexec/"bin").install filename => exec_filename
-        chmod 0755, libexec/"/bin/#{exec_filename}"
+        chmod 0755, libexec/"bin/#{exec_filename}"
       end
     end
 
-    Dir.glob("#{libexec}/bin/*").each do |file|
-      bin.install_symlink file if File.executable?(file)
+    export_files = [
+      "hello_python",
+      "rename_with_dir",
+      "major_image_res",
+      "hello_node",
+      "top_disk_io",
+    ]
+    export_files.each do |file|
+      bin.install_symlink "#{libexec}/bin/#{file}"
     end
   end
 end
