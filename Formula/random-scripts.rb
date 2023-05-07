@@ -20,9 +20,17 @@ class RandomScripts < Formula
     chdir "node" do
       system "npm", "install", *Language::Node.std_npm_install_args(libexec)
     end
-    bin.install_symlink Dir["#{libexec}/bin/hello_node"]
-    bin.install_symlink Dir["#{libexec}/bin/hello_python"]
-    bin.install_symlink Dir["#{libexec}/bin/rename_with_dir"]
-    bin.install_symlink Dir["#{libexec}/bin/major_image_res"]
+
+    chdir "dtrace" do
+      Dir.glob("*.d").each do |filename|
+        exec_filename = File.basename(filename, ".d")
+        (libexec/"bin").install filename => exec_filename
+        chmod 0755, libexec/"/bin/#{exec_filename}"
+      end
+    end
+
+    Dir.glob("#{libexec}/bin/*").each do |file|
+      bin.install_symlink file if File.executable?(file)
+    end
   end
 end
