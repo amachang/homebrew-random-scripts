@@ -98,6 +98,6 @@ def move_file(file_path: str, new_file_path: str, dry_run: bool) -> None:
     else:
         shutil.move(file_path, new_file_path)
 
-
-main()
+if __name__ == "__main__":
+    main()
 
