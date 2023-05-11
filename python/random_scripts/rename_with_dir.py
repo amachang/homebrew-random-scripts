@@ -9,6 +9,12 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
+ignore_target_filenames = {
+    '.DS_Store',
+    'desktop.ini',
+    'Desktop.ini',
+    'Thumbs.db',
+};
 
 def main() -> None:
     arg_parser = ArgumentParser()
@@ -22,6 +28,8 @@ def main() -> None:
     replacement: str = args.replacement
     file_path_list = get_file_path_list()
 
+    target_file_count = 0
+    nontarget_file_count = 0
     new_file_path_list = []
     for file_path in file_path_list:
         new_file_path = regex.sub(replacement, file_path)
@@ -30,6 +38,9 @@ def main() -> None:
             for d in dir_list:
                 if not exists_dir(d):
                     make_dir(d, dry_run)
+            target_file_count += 1
+        else:
+            nontarget_file_count += 1
         new_file_path_list.append(new_file_path)
 
     possibly_empty_dirs = set()
@@ -42,18 +53,21 @@ def main() -> None:
         subdirs = [Path(d)] + list(Path(d).parents)
         for subdir in subdirs:
             entry_list = os.listdir(subdir)
+            ignore_target_entry_list = [entry for entry in entry_list if entry in ignore_target_filenames]
+            non_ignore_target_entry_list = [entry for entry in entry_list if entry not in ignore_target_filenames]
             logging.info(f'Check dir empty {subdir}')
-            if len(entry_list) == 0:
+            if len(non_ignore_target_entry_list) == 0:
                 if not dry_run:
                     logging.info(f'Remove empty dir {subdir}')
-                    subdir.rmdir()
-            elif len(entry_list) == 1 and entry_list[0] == '.DS_Store':
-                if not dry_run:
-                    logging.info(f'Remove empty dir (.DS_Store exists) {subdir}')
-                    subdir.joinpath(entry_list[0]).unlink()
+                    for entry in ignore_target_entry_list:
+                        logging.info(f'Remove {entry}')
+                        subdir.joinpath(entry).unlink()
                     subdir.rmdir()
             else:
                 break
+
+    print(f'Renamed {target_file_count} files.')
+    print(f'Ignored {nontarget_file_count} files.')
 
 def get_file_path_list(d: str = '.') -> List[str]:
     file_path_list = []
@@ -66,6 +80,8 @@ def get_file_path_list(d: str = '.') -> List[str]:
         if path.isdir(entry_path):
             file_path_list.extend(get_file_path_list(entry_path))
         else:
+            if entryname in ignore_target_filenames:
+                continue
             file_path_list.append(entry_path)
     return file_path_list
 
