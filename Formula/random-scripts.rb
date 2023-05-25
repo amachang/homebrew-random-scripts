@@ -9,6 +9,7 @@ class RandomScripts < Formula
   depends_on "pixman"
   depends_on "cairo"
   depends_on "pango"
+  depends_on "rust"
 
   def install
     venv_root = virtualenv_create(libexec).instance_variable_get("@venv_root")
@@ -29,12 +30,24 @@ class RandomScripts < Formula
       end
     end
 
+    chdir "rust" do
+      system "git", "submodule", "init"
+      system "git", "submodule", "update"
+      Dir.glob("*").each do |projectname|
+        chdir projectname do
+          system "cargo", "build", "--release", "--bin", projectname
+          (libexec/"bin").install "target/release/#{projectname}" => projectname
+        end
+      end
+    end
+
     export_files = [
       "hello_python",
       "rename_with_dir",
       "major_image_res",
       "hello_node",
       "top_disk_io",
+      "drop_duplicate_files",
     ]
     export_files.each do |file|
       bin.install_symlink "#{libexec}/bin/#{file}"
