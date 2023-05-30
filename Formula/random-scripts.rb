@@ -48,6 +48,7 @@ class RandomScripts < Formula
       "hello_node",
       "top_disk_io",
       "drop_duplicate_files",
+      "fq",
     ]
     export_files.each do |file|
       bin.install_symlink "#{libexec}/bin/#{file}"

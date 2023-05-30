@@ -1,3 +1,6 @@
 [submodule "rust/drop_duplicate_files"]
 	path = rust/drop_duplicate_files
 	url = git@github.com:amachang/drop_duplicate_files.git
+[submodule "rust/fq"]
+	path = rust/fq
+	url = git@github.com:amachang/fq.git
