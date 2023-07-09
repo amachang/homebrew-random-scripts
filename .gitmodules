@@ -4,3 +4,6 @@
 [submodule "rust/fq"]
 	path = rust/fq
 	url = git@github.com:amachang/fq.git
+[submodule "rust/rename_video_files"]
+	path = rust/rename_video_files
+	url = git@github.com:amachang/rename_video_files.git
