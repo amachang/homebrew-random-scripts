@@ -9,6 +9,7 @@ setup(
             "hello_python=random_scripts.hello:main",
             "rename_with_dir=random_scripts.rename_with_dir:main",
             "major_image_res=random_scripts.major_image_res:main",
+            "make_app=random_scripts.make_app:main",
         ],
     },
     install_requires=[

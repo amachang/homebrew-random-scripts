@@ -10,6 +10,7 @@ class RandomScripts < Formula
   depends_on "cairo"
   depends_on "pango"
   depends_on "rust"
+  depends_on "ffmpeg"
 
   def install
     venv_root = virtualenv_create(libexec).instance_variable_get("@venv_root")
@@ -43,6 +44,7 @@ class RandomScripts < Formula
 
     export_files = [
       "hello_python",
+      "make_app",
       "rename_with_dir",
       "major_image_res",
       "hello_node",
