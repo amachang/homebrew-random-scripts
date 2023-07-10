@@ -6,6 +6,8 @@ import os
 import subprocess
 from typing import Optional
 import shlex
+import pkg_resources
+
 
 @click.command
 @click.option("--file", "-f", "shell_script_path", type=Path, required=False, help="shell script file path")
@@ -45,7 +47,7 @@ def main(shell_script_path: Optional[Path], command: Optional[str], app_path: Pa
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    template_dir = Path(__file__).absolute().parent.parent.joinpath("res", "make_app")
+    template_dir = Path(pkg_resources.resource_filename("random_scripts", "res/make_app"))
     template_env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(template_dir),
         autoescape=False,

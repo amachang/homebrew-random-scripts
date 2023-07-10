@@ -24,4 +24,5 @@ setup(
         "tqdm~=4.65.0",
         "types-tqdm~=4.65.0.1",
     ],
+    include_package_data=True,
 )
