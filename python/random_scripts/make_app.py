@@ -9,7 +9,8 @@ import subprocess
 @click.argument("command", type=str, required=True)
 @click.argument("app_path", type=Path, required=True)
 @click.option("--mode", '-m', type=click.Choice(['accept_file', 'just_run']), required=True, help="'accept_file' if you accept the path of the drag-n-drop-ed file as the last command line argument")
-def main(command: str, app_path: Path, mode: str) -> None:
+@click.option("--override", is_flag=True, show_default=True, default=False, help="override the current app file")
+def main(command: str, app_path: Path, mode: str, override: bool) -> None:
     """
     The script make an app bundle for macOS\n
     Example: make_app -m accept_file 'open -n -a VLC' ~/Desktop/NewVLCWindow.app
@@ -25,7 +26,7 @@ def main(command: str, app_path: Path, mode: str) -> None:
         app_path = output_dir.joinpath(filename)
 
     output_dir = app_path.parent
-    if app_path.exists():
+    if not override and app_path.exists():
         print("Error: file exists in", app_path)
         exit(1)
 

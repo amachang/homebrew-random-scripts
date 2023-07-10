@@ -2,21 +2,33 @@
 
 on run
     tell application "Finder"
-        do shell script "{{command}}" & space & quoted form of POSIX path of (insertion location as alias)
+        set currentDir to POSIX path of (insertion location as alias)
+        my execCommand("{{command}}" & space & quoted form of currentDir, currentDir)
     end tell
-
 end run
 
 on open draggedItems
-	repeat with theItem in draggedItems
-		do shell script "{{command}}" & space & quoted form of POSIX path of theItem
-	end repeat
+    tell application "Finder"
+        repeat with theItem in draggedItems
+            set currentDir to POSIX path of (insertion location as alias)
+            my execCommand("{{command}}" & space & quoted form of POSIX path of theItem, currentDir)
+        end repeat
+    end tell
 end open
 
 {% else %}
 
 on run
-    do shell script "{{command}}"
+    tell application "Finder"
+        set currentDir to POSIX path of (insertion location as alias)
+        my execCommand("{{command}}", currentDir)
+    end tell
 end run
 
 {% endif %}
+
+on execCommand(command, currentDir)
+    set zshCommand to "source ~/.zshrc ; cd" & space & quoted form of currentDir & ";" & command
+    do shell script "/bin/zsh -c" & space & quoted form of zshCommand
+end execCommmand
+
