@@ -4,18 +4,28 @@ import re
 import jinja2
 import os
 import subprocess
+from typing import Optional
+import shlex
 
 @click.command
-@click.argument("command", type=str, required=True)
-@click.argument("app_path", type=Path, required=True)
-@click.option("--mode", '-m', type=click.Choice(['accept_file', 'just_run']), required=True, help="'accept_file' if you accept the path of the drag-n-drop-ed file as the last command line argument")
-@click.option("--override", is_flag=True, show_default=True, default=False, help="override the current app file")
-def main(command: str, app_path: Path, mode: str, override: bool) -> None:
-    """
-    The script make an app bundle for macOS\n
-    Example: make_app -m accept_file 'open -n -a VLC' ~/Desktop/NewVLCWindow.app
-    """
-    droppable = mode == 'accept_file'
+@click.option("--file", "-f", "shell_script_path", type=Path, required=False, help="shell script file path")
+@click.option("--command", "-c", "command", type=str, required=False, help="shell script source code")
+@click.option("--app", "-a", "app_path", type=Path, required=True, help="app export path")
+@click.option("--droppable-file", "-d", "droppable", is_flag=True, default=False, required=True, help="make app drag-n-dragg-able")
+@click.option("--override", is_flag=True, show_default=True, default=False, help="allow override the current app file")
+def main(shell_script_path: Optional[Path], command: Optional[str], app_path: Path, droppable: bool, override: bool) -> None:
+    if command and shell_script_path:
+        print("Error: Not allowed to give either --file and --command")
+        exit(1)
+
+    if not command and not shell_script_path:
+        print("Error: --file or --command must specify either")
+        exit(1)
+
+    if shell_script_path:
+        command = shlex.join(['source', str(shell_script_path.absolute())])
+
+    assert isinstance(command, str)
 
     filename = app_path.name
     if match := re.fullmatch(r"(.*?)\.app", filename):
