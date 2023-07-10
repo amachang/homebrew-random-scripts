@@ -7,19 +7,26 @@ import subprocess
 
 @click.command
 @click.argument("command", type=str, required=True)
-@click.argument("output_path", type=Path, required=True)
-def main(command: str, output_path: Path) -> None:
-    filename = output_path.name
+@click.argument("app_path", type=Path, required=True)
+@click.option("--mode", '-m', type=click.Choice(['accept_file', 'just_run']), required=True, help="'accept_file' if you accept the path of the drag-n-drop-ed file as the last command line argument")
+def main(command: str, app_path: Path, mode: str) -> None:
+    """
+    The script make an app bundle for macOS\n
+    Example: make_app -m accept_file 'open -n -a VLC' ~/Desktop/NewVLCWindow.app
+    """
+    droppable = mode == 'accept_file'
+
+    filename = app_path.name
     if match := re.fullmatch(r"(.*?)\.app", filename):
         basename = match.group(1)
     else:
         basename = filename
         filename = basename + ".app"
-        output_path = output_dir.joinpath(filename)
+        app_path = output_dir.joinpath(filename)
 
-    output_dir = output_path.parent
-    if output_path.exists():
-        print("Error: file exists in", output_path)
+    output_dir = app_path.parent
+    if app_path.exists():
+        print("Error: file exists in", app_path)
         exit(1)
 
     main_script_filename = basename + ".applescript"
@@ -36,11 +43,15 @@ def main(command: str, output_path: Path) -> None:
 
     command = re.sub(r'\\', '\\\\\\\\', command)
     command = re.sub(r'"', '\\"', command)
-    main_script = main_script_template.render({"command": command})
+
+    main_script = main_script_template.render({
+        "droppable": droppable,
+        "command": command,
+    })
     main_script_path.write_text(main_script)
 
-    subprocess.check_call(['osacompile', '-o', output_path, main_script_path])
-    print("Done:", output_path)
+    subprocess.check_call(['osacompile', '-o', app_path, main_script_path])
+    print("Done:", app_path)
 
 if __name__ == "__main__":
     main()

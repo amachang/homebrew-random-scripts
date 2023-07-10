@@ -1,5 +1,10 @@
+{% if droppable %}
+
 on run
-    do shell script "{{command}}"
+    tell application "Finder"
+        do shell script "{{command}}" & space & quoted form of POSIX path of (insertion location as alias)
+    end tell
+
 end run
 
 on open draggedItems
@@ -8,3 +13,10 @@ on open draggedItems
 	end repeat
 end open
 
+{% else %}
+
+on run
+    do shell script "{{command}}"
+end run
+
+{% endif %}
