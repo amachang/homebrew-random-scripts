@@ -7,3 +7,6 @@
 [submodule "rust/rename_video_files"]
 	path = rust/rename_video_files
 	url = git@github.com:amachang/rename_video_files.git
+[submodule "rust/gofile"]
+	path = rust/gofile
+	url = git@github.com:amachang/gofile.git
