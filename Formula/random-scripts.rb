@@ -16,7 +16,7 @@ class RandomScripts < Formula
     venv_root = virtualenv_create(libexec).instance_variable_get("@venv_root")
 
     chdir "python" do
-      system venv_root/"bin/pip", "install", ".", "-v", "--ignore-installed"
+      system venv_root/"bin/python", "-m", "pip", "install", ".", "-v", "--ignore-installed"
     end
 
     chdir "node" do
