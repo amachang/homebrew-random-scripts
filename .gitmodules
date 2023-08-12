@@ -10,3 +10,6 @@
 [submodule "rust/gofile"]
 	path = rust/gofile
 	url = git@github.com:amachang/gofile.git
+[submodule "rust/rmjunk"]
+	path = rust/rmjunk
+	url = git@github.com:amachang/rmjunk.git

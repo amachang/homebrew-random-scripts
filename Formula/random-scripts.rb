@@ -53,6 +53,7 @@ class RandomScripts < Formula
       "fq",
       "rename_video_files",
       "gofile",
+      "rmjunk",
     ]
     export_files.each do |file|
       bin.install_symlink "#{libexec}/bin/#{file}"
